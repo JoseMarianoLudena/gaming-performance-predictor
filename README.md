@@ -11,7 +11,7 @@ Este test mide tus habilidades en videojuegos shooter mediante 3 mini-tests:
 
 ### 📱 Cómo Participar
 
-1. Abre:  [Mini Test](https://josemarianoludena.github.io/gaming-performance-predictor/frontend/mini_test_piloto. html)
+1. Abre:  [Mini Test](https://github.com/JoseMarianoLudena/gaming-performance-predictor/frontend/mini_test_piloto.html)
 2. Completa los 3 tests (~ 5 minutos)
 3. Al finalizar, sigue las instrucciones para enviar tu rango
 
