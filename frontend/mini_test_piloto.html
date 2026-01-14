@@ -197,63 +197,98 @@
                 miss_rate: (aimResults.misses / (aimResults.hits + aimResults.misses)).toFixed(4),
                 cpm: ((clickTest.clicks / clickTest.duration) * 60).toFixed(2),
                 error_rate: (clickTest.errors / clickTest.clicks).toFixed(4),
-                test_duration_s:  testResults.total_duration. toFixed(2)
+                test_duration_s: testResults. total_duration. toFixed(2)
             };
 
-            // Generar ID único temporal
             const participantId = 'P' + Date.now().toString().slice(-6);
+            const csvRow = `${participantId},${new Date().toISOString().split('T')[0]},${selectedGame},RANGO_PENDIENTE,${metrics.reaction_ms_mean},${metrics.reaction_ms_std},${metrics.false_starts},${metrics.aim_accuracy},${metrics.mean_time_to_hit_ms},${metrics.miss_rate},${metrics.cpm},${metrics.error_rate},${metrics.test_duration_s}`;
 
-            const csvRow = `${participantId},${new Date().toISOString().split('T')[0]},${selectedGame},[TU_RANGO_AQUÍ],${metrics.reaction_ms_mean},${metrics.reaction_ms_std},${metrics.false_starts},${metrics.aim_accuracy},${metrics.mean_time_to_hit_ms},${metrics.miss_rate},${metrics. cpm},${metrics.error_rate},${metrics.test_duration_s}`;
+            // Guardar en localStorage
+            localStorage.setItem('testData', csvRow);
+            localStorage.setItem('participantId', participantId);
 
             document.getElementById('loading').classList.add('hidden');
             
             const container = document.querySelector('.container');
             container.innerHTML = `
                 <header>
-                    <h1>📊 Resultados del Test</h1>
-                    <p>Guarda estos datos</p>
+                    <h1>✅ ¡Test Completado!</h1>
+                    <p>Solo un paso más... </p>
                 </header>
 
-                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 12px; margin:  20px 0;">
-                    <h2>🎮 Juego: ${selectedGame. toUpperCase()}</h2>
-                    <p style="font-size: 1.1rem; margin-top: 10px;">ID Temporal: ${participantId}</p>
+                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 40px; border-radius: 12px; text-align: center; margin:  20px 0;">
+                    <h2 style="font-size: 2.5rem; margin:  0;">🎉 ¡Excelente! </h2>
+                    <p style="font-size: 1.2rem; margin-top: 15px; opacity: 0.95;">
+                        Tu información ha sido procesada correctamente
+                    </p>
                 </div>
 
-                <div style="background: #f8fafc; padding: 30px; border-radius: 12px; margin: 20px 0;">
-                    <h2 style="margin-bottom: 20px;">📋 Tus Métricas: </h2>
+                <div style="background: #f8fafc; padding: 30px; border-radius: 12px; margin:  20px 0;">
+                    <h2 style="margin-bottom: 20px;">📊 Resumen de Resultados: </h2>
                     
-                    <div style="display:  grid; grid-template-columns:  1fr 1fr; gap: 15px; background: white; padding: 20px; border-radius: 8px;">
-                        <div><strong>Tiempo Reacción:</strong> ${metrics. reaction_ms_mean} ms</div>
-                        <div><strong>Consistencia:</strong> ${metrics.reaction_ms_std} ms</div>
-                        <div><strong>False Starts:</strong> ${metrics. false_starts}</div>
-                        <div><strong>Puntería:</strong> ${(metrics.aim_accuracy * 100).toFixed(1)}%</div>
-                        <div><strong>Tiempo al Target:</strong> ${metrics.mean_time_to_hit_ms} ms</div>
-                        <div><strong>Miss Rate:</strong> ${(metrics.miss_rate * 100).toFixed(1)}%</div>
-                        <div><strong>Clics/Minuto:</strong> ${metrics.cpm}</div>
-                        <div><strong>Error Rate:</strong> ${(metrics.error_rate * 100).toFixed(1)}%</div>
-                        <div style="grid-column: 1 / -1;"><strong>Duración Total:</strong> ${metrics.test_duration_s}s</div>
+                    <div style="display:  grid; grid-template-columns:  repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Tiempo Reacción</div>
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #1e293b;">${metrics.reaction_ms_mean} <span style="font-size: 1rem; color: #94a3b8;">ms</span></div>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Puntería</div>
+                            <div style="font-size:  1.8rem; font-weight: 700; color: #1e293b;">${(metrics.aim_accuracy * 100).toFixed(1)}<span style="font-size: 1rem; color: #94a3b8;">%</span></div>
+                        </div>
+                        
+                        <div style="background: white; padding:  20px; border-radius:  8px; border-left:  4px solid #ec4899;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Clics/Min</div>
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #1e293b;">${metrics.cpm}</div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
-                    <h3>📝 Fila CSV para el investigador: </h3>
-                    <textarea id="csv-row" readonly style="width: 100%; height: 100px; padding: 10px; font-family: monospace; font-size: 11px; margin-top: 10px; border: 2px solid #e2e8f0; border-radius: 8px;">${csvRow}</textarea>
-                    <button onclick="copyCSV()" class="btn btn-primary" style="margin-top: 10px;">📋 Copiar CSV</button>
+                <div style="background: #dbeafe; padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6; margin:  20px 0;">
+                    <h3 style="margin:  0 0 15px 0; color: #1e40af;">📝 Último Paso (15 segundos)</h3>
+                    <p style="margin:  0 0 20px 0; color: #1e293b; line-height: 1.6;">
+                        Para completar tu participación, necesitamos verificar tu <strong>rango actual</strong> en <strong>${selectedGame. toUpperCase()}</strong>.
+                        <br><br>
+                        Al hacer clic abajo, se abrirá un formulario donde solo debes: 
+                        <br>
+                        1️⃣ Escribir tu rango (ej: Gold 2, Platinum, etc.)
+                        <br>
+                        2️⃣ Subir un screenshot de tu rango (opcional)
+                        <br>
+                        3️⃣ Enviar
+                    </p>
+                    <button onclick="abrirFormulario()" class="btn btn-success" style="width: 100%; padding: 18px; font-size: 1.2rem;">
+                        📤 Completar Participación (Abrir Formulario)
+                    </button>
                 </div>
 
-                <div style="background:  #dbeafe; padding: 20px; border-radius: 12px; margin-top: 20px; border-left: 4px solid #3b82f6;">
-                    <strong>⚠️ IMPORTANTE:</strong>
-                    <ul style="margin:  10px 0 0 20px;">
-                        <li>Copia la fila CSV de arriba</li>
-                        <li>Envíala al investigador junto con tu <strong>rango verificado</strong></li>
-                        <li>Reemplazará [TU_RANGO_AQUÍ] con tu rango real</li>
-                    </ul>
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 8px;">
+                    <p style="color: #64748b; font-size: 0.9rem; margin: 0;">
+                        ID de tu test: <code style="background: #e2e8f0; padding:  4px 8px; border-radius: 4px; font-family: monospace;">${participantId}</code>
+                    </p>
                 </div>
-
-                <button onclick="location.reload()" class="btn btn-secondary" style="margin-top: 20px;">
-                    🔄 Hacer Otra Prueba
-                </button>
             `;
+        }
+
+        function abrirFormulario() {
+            const csvData = localStorage.getItem('testData');
+            
+            // IDs de tu Google Form
+            const FORM_ID = '1FAIpQLSd54b00WcxsPAQsxoJPaqYd3qyk3TOJ1q6S3A1ZtqhFEcd2tw';
+            const ENTRY_ID = '28950858';
+            
+            const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?usp=pp_url&entry.${ENTRY_ID}=${encodeURIComponent(csvData)}`;
+            
+            // Abrir formulario
+            window.open(formUrl, '_blank');
+            
+            // Mostrar confirmación
+            setTimeout(() => {
+                if (confirm('✅ Se abrió el formulario en una nueva pestaña.\n\n¿Ya completaste y enviaste el formulario?')) {
+                    alert('🎉 ¡Gracias por participar en el estudio!\n\nTus datos ayudarán a mejorar la investigación sobre gaming performance.');
+                    location.reload();
+                }
+            }, 2000);
         }
 
         function calculateStd(values) {
@@ -261,13 +296,6 @@
             const squareDiffs = values.map(value => Math.pow(value - avg, 2));
             const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
             return Math.sqrt(avgSquareDiff);
-        }
-
-        function copyCSV() {
-            const textarea = document.getElementById('csv-row');
-            textarea.select();
-            document.execCommand('copy');
-            alert('✅ Copiado al portapapeles! ');
         }
     </script>
 </body>
