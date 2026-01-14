@@ -1,0 +1,34 @@
+# Agregar los archivos extra al .gitignore
+@"
+# Python
+__pycache__/
+*.py[cod]
+venv/
+env/
+*. egg-info/
+
+# Data y Backend
+backend/
+data/
+notebooks/
+
+# IDEs
+.vscode/
+. idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+*. log
+
+# Archivos del proyecto (no para GitHub Pages)
+requirements.txt
+structure.txt
+understand_flow.py
+verify_csv.py
+verify_structure.py
+entrenar. py
+verificar_csv.py
+process_my_data.py
+"@ | Out-File -FilePath .gitignore -Encoding UTF8 -Force

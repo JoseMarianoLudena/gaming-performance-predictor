@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Resultados - Gaming Performance Test</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container results-container">
+        <header>
+            <h1>🎯 Tus Resultados</h1>
+            <p>Análisis completo de tu performance</p>
+        </header>
+
+        <!-- Main Result Card -->
+        <div class="result-card">
+            <h2>Tu Skill Tier</h2>
+            <div id="tier-badge" class="tier-badge">LOADING...</div>
+            
+            <div class="performance-score">
+                <span id="performance-score">--</span>
+                <span style="font-size: 2rem; opacity: 0.8;">/100</span>
+            </div>
+            <p class="score-label">Performance Score</p>
+
+            <div id="game-equivalent" class="game-equivalent hidden">
+                <strong id="selected-game">VALORANT</strong>
+                <br>
+                Equivalente aproximado: <span id="rank-equivalent">Gold-Platinum</span>
+            </div>
+
+            <p style="margin-top: 20px; opacity: 0.9;">
+                Confianza del modelo: <strong id="confidence">--</strong>%
+            </p>
+        </div>
+
+        <!-- Probabilities -->
+        <div id="probabilities-section" class="probabilities hidden">
+            <h3>Distribución de Probabilidades</h3>
+            
+            <div class="probability-bar">
+                <div class="probability-label">
+                    <span>🔴 Low Tier</span>
+                    <span id="prob-low-text">--</span>
+                </div>
+                <div class="probability-fill-container">
+                    <div id="prob-low" class="probability-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="probability-bar">
+                <div class="probability-label">
+                    <span>🟡 Medium Tier</span>
+                    <span id="prob-medium-text">--</span>
+                </div>
+                <div class="probability-fill-container">
+                    <div id="prob-medium" class="probability-fill" style="width:  0%"></div>
+                </div>
+            </div>
+
+            <div class="probability-bar">
+                <div class="probability-label">
+                    <span>🟢 High Tier</span>
+                    <span id="prob-high-text">--</span>
+                </div>
+                <div class="probability-fill-container">
+                    <div id="prob-high" class="probability-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Metrics -->
+        <h2 class="text-center mt-20 mb-20">📊 Métricas Detalladas</h2>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Tiempo de Reacción</div>
+                <div class="metric-value">
+                    <span id="reaction-avg">--</span>
+                    <span class="metric-unit">ms</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Consistencia</div>
+                <div class="metric-value">
+                    <span id="reaction-std">--</span>
+                    <span class="metric-unit">ms</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">False Starts</div>
+                <div class="metric-value">
+                    <span id="false-starts">--</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Puntería</div>
+                <div class="metric-value">
+                    <span id="aim-accuracy">--</span>
+                    <span class="metric-unit">%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Tiempo al Target</div>
+                <div class="metric-value">
+                    <span id="time-to-hit">--</span>
+                    <span class="metric-unit">ms</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Miss Rate</div>
+                <div class="metric-value">
+                    <span id="miss-rate">--</span>
+                    <span class="metric-unit">%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Clics por Minuto</div>
+                <div class="metric-value">
+                    <span id="cpm">--</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Error Rate</div>
+                <div class="metric-value">
+                    <span id="error-rate">--</span>
+                    <span class="metric-unit">%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Duración Total</div>
+                <div class="metric-value">
+                    <span id="test-duration">--</span>
+                    <span class="metric-unit">s</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="text-center mt-20">
+            <button onclick="window.location.href='mini_test. html'" class="btn btn-primary">
+                🔄 Realizar Test Nuevamente
+            </button>
+            <button onclick="window.location. href='index.html'" class="btn btn-secondary">
+                🏠 Volver al Inicio
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Cargar resultados del localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const results = JSON.parse(localStorage.getItem('testResults'));
+            const selectedGame = localStorage.getItem('selectedGame');
+
+            if (! results) {
+                alert('No se encontraron resultados.  Por favor realiza el test primero.');
+                window.location.href = 'mini_test.html';
+                return;
+            }
+
+            displayResults(results, selectedGame);
+        });
+
+        function displayResults(results, game) {
+            // Tier Badge
+            const tierBadge = document.getElementById('tier-badge');
+            tierBadge.textContent = results.tier_label;
+            tierBadge.className = `tier-badge ${results.tier_label. toLowerCase()}`;
+
+            // Performance Score con animación
+            animateValue('performance-score', 0, results.performance_score, 1500);
+
+            // Confidence
+            document.getElementById('confidence').textContent = results.confidence;
+
+            // Game Equivalent
+            if (results.game_interpretation) {
+                document.getElementById('game-equivalent').classList.remove('hidden');
+                document.getElementById('selected-game').textContent = game. toUpperCase();
+                document.getElementById('rank-equivalent').textContent = results.game_interpretation;
+            }
+
+            // Probabilities (si están disponibles)
+            if (results.probabilities) {
+                document.getElementById('probabilities-section').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    setProbability('low', results.probabilities.Low);
+                    setProbability('medium', results.probabilities.Medium);
+                    setProbability('high', results.probabilities.High);
+                }, 300);
+            }
+
+            // Features detalladas
+            const features = results.features;
+            document.getElementById('reaction-avg').textContent = Math.round(features.reaction_ms_mean);
+            document.getElementById('reaction-std').textContent = Math. round(features.reaction_ms_std);
+            document.getElementById('false-starts').textContent = features.false_starts;
+            document.getElementById('aim-accuracy').textContent = (features.aim_accuracy * 100).toFixed(1);
+            document.getElementById('time-to-hit').textContent = Math.round(features.mean_time_to_hit_ms);
+            document.getElementById('miss-rate').textContent = (features.miss_rate * 100).toFixed(1);
+            document.getElementById('cpm').textContent = Math.round(features. cpm);
+            document.getElementById('error-rate').textContent = (features.error_rate * 100).toFixed(1);
+            document.getElementById('test-duration').textContent = features.test_duration_s. toFixed(1);
+        }
+
+        function setProbability(tier, value) {
+            document.getElementById(`prob-${tier}`).style.width = value + '%';
+            document.getElementById(`prob-${tier}-text`).textContent = value.toFixed(1) + '%';
+        }
+
+        function animateValue(id, start, end, duration) {
+            const element = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
+        }
+    </script>
+</body>
+</html>

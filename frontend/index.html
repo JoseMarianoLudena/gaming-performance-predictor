@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Performance Predictor</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Gaming Performance Predictor</h1>
+            <p>Descubre tu nivel de habilidad en shooters mediante tests de interacción digital</p>
+        </header>
+
+        <div style="text-align: center; margin:  40px 0;">
+            <img src="https://via.placeholder.com/600x300/667eea/ffffff?text=Gaming+Performance+Test" 
+                 alt="Gaming Test" 
+                 style="max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        </div>
+
+        <div style="background: #f8fafc; padding: 30px; border-radius: 12px; margin:  30px 0;">
+            <h2 style="margin-bottom: 20px;">📋 Cómo funciona</h2>
+            
+            <div style="display: grid; gap: 20px;">
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</div>
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">Selecciona tu juego principal</h3>
+                        <p style="margin: 0; color: #64748b;">Valorant, CS:GO, Fortnite o Call of Duty Warzone</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display:  flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</div>
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">Completa 3 mini-tests</h3>
+                        <p style="margin: 0; color: #64748b;">Tiempo de reacción, puntería y velocidad de clics (~2 minutos)</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; width:  40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</div>
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">Obtén tu predicción</h3>
+                        <p style="margin: 0; color: #64748b;">Nuestro modelo ML predice tu skill tier y te muestra el equivalente en tu juego</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 12px; margin: 30px 0;">
+            <h3 style="margin:  0 0 10px 0;">🔬 Tecnología</h3>
+            <p style="margin: 0; opacity: 0.95;">
+                Utilizamos Machine Learning (Logistic Regression, Random Forest y Linear SVM) 
+                con validación Leave-One-Out para predecir tu rendimiento basándonos en métricas 
+                de interacción digital validadas científicamente.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button onclick="window.location. href='mini_test.html'" class="btn btn-large btn-primary">
+                🚀 Comenzar Test
+            </button>
+        </div>
+
+        <footer style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid #e2e8f0; color: #64748b;">
+            <p>Proyecto de Tesis - Sistema de Predicción de Rendimiento en Videojuegos Shooter</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">© 2026 - Desarrollado con ❤️ para investigación académica</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Performance Test</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Gaming Performance Mini-Test</h1>
+            <p>Completa las 3 pruebas para obtener tu predicción de skill tier</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress" class="progress-fill"></div>
+            </div>
+            <p id="progress-text">Paso 1 de 4</p>
+        </div>
+
+        <!-- Paso 1:  Selección de juego -->
+        <div id="step-1" class="step active">
+            <h2>Paso 1: Selecciona tu juego principal</h2>
+            <select id="game-select" class="game-select">
+                <option value="">-- Selecciona un juego --</option>
+                <option value="valorant">Valorant</option>
+                <option value="csgo">CS:GO / CS2</option>
+                <option value="apex">Apex Legends</option>
+                <option value="overwatch">Overwatch 2</option>
+            </select>
+            <button onclick="nextStep()" class="btn btn-primary">Continuar</button>
+        </div>
+
+        <!-- Paso 2: Reaction Time Test -->
+        <div id="step-2" class="step">
+            <h2>Paso 2: Test de Tiempo de Reacción</h2>
+            <p>Haz clic lo más rápido posible cuando la pantalla cambie de color</p>
+            
+            <div id="reaction-container" class="test-container">
+                <div id="reaction-box" class="reaction-box waiting">
+                    <p id="reaction-text">Haz clic para comenzar</p>
+                </div>
+            </div>
+
+            <div id="reaction-stats" class="stats hidden">
+                <p>Intentos: <span id="reaction-attempts">0</span>/10</p>
+                <p>Promedio: <span id="reaction-avg">-</span> ms</p>
+                <p>Último:  <span id="reaction-last">-</span> ms</p>
+            </div>
+
+            <button id="next-after-reaction" onclick="nextStep()" class="btn btn-primary hidden">
+                Continuar al Test de Puntería
+            </button>
+        </div>
+
+        <!-- Paso 3: Aim Test -->
+        <div id="step-3" class="step">
+            <h2>Paso 3: Test de Puntería</h2>
+            <p>Haz clic en los objetivos lo más rápido y preciso posible (30 segundos)</p>
+            
+            <div id="aim-stats" class="stats">
+                <p>Tiempo: <span id="aim-timer">30</span>s</p>
+                <p>Aciertos: <span id="aim-hits">0</span></p>
+                <p>Fallos: <span id="aim-misses">0</span></p>
+            </div>
+
+            <div id="aim-container" class="aim-container">
+                <button id="start-aim" onclick="startAimTest()" class="btn btn-secondary">
+                    Comenzar Test
+                </button>
+            </div>
+
+            <button id="next-after-aim" onclick="nextStep()" class="btn btn-primary hidden">
+                Continuar al Test de Clics
+            </button>
+        </div>
+
+        <!-- Paso 4: Click Speed Test -->
+        <div id="step-4" class="step">
+            <h2>Paso 4: Test de Velocidad de Clics</h2>
+            <p>Haz clic lo más rápido posible durante 10 segundos</p>
+            
+            <div id="click-stats" class="stats">
+                <p>Tiempo: <span id="click-timer">10</span>s</p>
+                <p>Clics: <span id="click-count">0</span></p>
+                <p>CPM: <span id="click-cpm">0</span></p>
+            </div>
+
+            <div id="click-container" class="test-container">
+                <div id="click-box" class="click-box">
+                    <button id="start-click" onclick="startClickTest()" class="btn btn-large">
+                        Comenzar Test
+                    </button>
+                </div>
+            </div>
+
+            <button id="submit-results" onclick="submitResults()" class="btn btn-success hidden">
+                Ver Resultados
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Analizando tu performance...</p>
+        </div>
+    </div>
+
+    <script src="js/reaction_test.js"></script>
+    <script src="js/aim_test.js"></script>
+    <script src="js/click_test.js"></script>
+    <script>
+        // State management
+        let currentStep = 1;
+        let selectedGame = '';
+        let testResults = {
+            reaction_times: [],
+            aim_results: {},
+            click_test: {}
+        };
+
+        function nextStep() {
+            // Validaciones
+            if (currentStep === 1) {
+                selectedGame = document.getElementById('game-select').value;
+                if (! selectedGame) {
+                    alert('Por favor selecciona un juego');
+                    return;
+                }
+            }
+
+            if (currentStep === 2 && testResults.reaction_times.length < 10) {
+                alert('Completa las 10 rondas del test de reacción');
+                return;
+            }
+
+            if (currentStep === 3 && ! testResults.aim_results.hits) {
+                alert('Completa el test de puntería');
+                return;
+            }
+
+            if (currentStep === 4 && !testResults.click_test. clicks) {
+                alert('Completa el test de clics');
+                return;
+            }
+
+            // Ocultar step actual
+            document. getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Mostrar siguiente step
+            currentStep++;
+            if (currentStep <= 4) {
+                document. getElementById(`step-${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Paso ${currentStep} de 4`;
+        }
+
+        async function submitResults() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('submit-results').classList.add('hidden');
+
+            // NUEVO: Calcular duración total
+            const totalDuration = (
+                (testResults.reaction_test_duration || 0) +
+                (testResults.aim_test_duration || 0) +
+                (testResults.click_test_duration || 0)
+            );
+
+            testResults.total_duration = totalDuration;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        test_data: testResults,
+                        game:  selectedGame
+                    })
+                });
+
+                const result = await response.json();
+                
+                // Guardar en localStorage y redirigir
+                localStorage.setItem('testResults', JSON.stringify(result));
+                localStorage.setItem('selectedGame', selectedGame);
+                window.location.href = 'results. html';
+
+            } catch (error) {
+                alert('Error al procesar los resultados:  ' + error.message);
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('submit-results').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

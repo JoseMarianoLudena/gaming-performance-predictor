@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Performance Test - Estudio Piloto</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Gaming Performance Mini-Test</h1>
+            <p>Completa las 3 pruebas para obtener tus métricas</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress" class="progress-fill"></div>
+            </div>
+            <p id="progress-text">Paso 1 de 4</p>
+        </div>
+
+        <!-- Paso 1: Selección de juego -->
+        <div id="step-1" class="step active">
+            <h2>Paso 1: Selecciona tu juego principal</h2>
+            <select id="game-select" class="game-select">
+                <option value="">-- Selecciona un juego --</option>
+                <option value="valorant">Valorant</option>
+                <option value="csgo">CS:GO / CS2</option>
+                <option value="fortnite">Fortnite</option>
+                <option value="warzone">Call of Duty Warzone</option>
+            </select>
+            <button onclick="nextStep()" class="btn btn-primary">Continuar</button>
+        </div>
+
+        <!-- Paso 2: Reaction Time Test -->
+        <div id="step-2" class="step">
+            <h2>Paso 2: Test de Tiempo de Reacción</h2>
+            <p>Haz clic lo más rápido posible cuando la pantalla cambie de color</p>
+            
+            <div id="reaction-container" class="test-container">
+                <div id="reaction-box" class="reaction-box waiting">
+                    <p id="reaction-text">Haz clic para comenzar</p>
+                </div>
+            </div>
+
+            <div id="reaction-stats" class="stats hidden">
+                <p>Intentos: <span id="reaction-attempts">0</span>/10</p>
+                <p>Promedio: <span id="reaction-avg">-</span> ms</p>
+                <p>Último:  <span id="reaction-last">-</span> ms</p>
+            </div>
+
+            <button id="next-after-reaction" onclick="nextStep()" class="btn btn-primary hidden">
+                Continuar al Test de Puntería
+            </button>
+        </div>
+
+        <!-- Paso 3: Aim Test -->
+        <div id="step-3" class="step">
+            <h2>Paso 3: Test de Puntería</h2>
+            <p>Haz clic en los objetivos lo más rápido y preciso posible (30 segundos)</p>
+            
+            <div id="aim-stats" class="stats">
+                <p>Tiempo: <span id="aim-timer">30</span>s</p>
+                <p>Aciertos: <span id="aim-hits">0</span></p>
+                <p>Fallos: <span id="aim-misses">0</span></p>
+            </div>
+
+            <div id="aim-container" class="aim-container">
+                <button id="start-aim" onclick="startAimTest()" class="btn btn-secondary">
+                    Comenzar Test
+                </button>
+            </div>
+
+            <button id="next-after-aim" onclick="nextStep()" class="btn btn-primary hidden">
+                Continuar al Test de Clics
+            </button>
+        </div>
+
+        <!-- Paso 4: Click Speed Test -->
+        <div id="step-4" class="step">
+            <h2>Paso 4: Test de Velocidad de Clics</h2>
+            <p>Haz clic lo más rápido posible durante 10 segundos</p>
+            
+            <div id="click-stats" class="stats">
+                <p>Tiempo: <span id="click-timer">10</span>s</p>
+                <p>Clics: <span id="click-count">0</span></p>
+                <p>CPM: <span id="click-cpm">0</span></p>
+            </div>
+
+            <div id="click-container" class="test-container">
+                <div id="click-box" class="click-box">
+                    <button id="start-click" onclick="startClickTest()" class="btn btn-large">
+                        Comenzar Test
+                    </button>
+                </div>
+            </div>
+
+            <button id="submit-results" onclick="submitResults()" class="btn btn-success hidden">
+                Ver Resultados
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Procesando resultados...</p>
+        </div>
+    </div>
+
+    <script src="js/reaction_test.js"></script>
+    <script src="js/aim_test.js"></script>
+    <script src="js/click_test.js"></script>
+    <script>
+        // State management
+        let currentStep = 1;
+        let selectedGame = '';
+        let testResults = {
+            reaction_times: [],
+            aim_results: {},
+            click_test:  {}
+        };
+
+        function nextStep() {
+            // Validaciones
+            if (currentStep === 1) {
+                selectedGame = document.getElementById('game-select').value;
+                if (! selectedGame) {
+                    alert('Por favor selecciona un juego');
+                    return;
+                }
+            }
+
+            if (currentStep === 2 && testResults.reaction_times.length < 10) {
+                alert('Completa las 10 rondas del test de reacción');
+                return;
+            }
+
+            if (currentStep === 3 && ! testResults.aim_results. hits) {
+                alert('Completa el test de puntería');
+                return;
+            }
+
+            if (currentStep === 4 && !testResults.click_test. clicks) {
+                alert('Completa el test de clics');
+                return;
+            }
+
+            // Ocultar step actual
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Mostrar siguiente step
+            currentStep++;
+            if (currentStep <= 4) {
+                document. getElementById(`step-${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Paso ${currentStep} de 4`;
+        }
+
+        function submitResults() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('submit-results').classList.add('hidden');
+
+            // Calcular duración total
+            const totalDuration = (
+                (testResults.reaction_test_duration || 0) +
+                (testResults.aim_test_duration || 0) +
+                (testResults.click_test_duration || 0)
+            );
+
+            testResults.total_duration = totalDuration;
+
+            // Calcular métricas
+            setTimeout(() => {
+                mostrarResultados();
+            }, 1000);
+        }
+
+        function mostrarResultados() {
+            const reactionTimes = testResults.reaction_times;
+            const aimResults = testResults.aim_results;
+            const clickTest = testResults.click_test;
+            
+            const metrics = {
+                reaction_ms_mean: (reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length).toFixed(2),
+                reaction_ms_std: calculateStd(reactionTimes).toFixed(2),
+                false_starts: testResults.false_starts || 0,
+                aim_accuracy: (aimResults.hits / (aimResults.hits + aimResults.misses)).toFixed(4),
+                mean_time_to_hit_ms: (aimResults.times_to_hit. reduce((a, b) => a + b, 0) / aimResults.times_to_hit.length).toFixed(2),
+                miss_rate: (aimResults.misses / (aimResults.hits + aimResults.misses)).toFixed(4),
+                cpm: ((clickTest.clicks / clickTest.duration) * 60).toFixed(2),
+                error_rate: (clickTest.errors / clickTest.clicks).toFixed(4),
+                test_duration_s:  testResults.total_duration. toFixed(2)
+            };
+
+            // Generar ID único temporal
+            const participantId = 'P' + Date.now().toString().slice(-6);
+
+            const csvRow = `${participantId},${new Date().toISOString().split('T')[0]},${selectedGame},[TU_RANGO_AQUÍ],${metrics.reaction_ms_mean},${metrics.reaction_ms_std},${metrics.false_starts},${metrics.aim_accuracy},${metrics.mean_time_to_hit_ms},${metrics.miss_rate},${metrics. cpm},${metrics.error_rate},${metrics.test_duration_s}`;
+
+            document.getElementById('loading').classList.add('hidden');
+            
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <header>
+                    <h1>📊 Resultados del Test</h1>
+                    <p>Guarda estos datos</p>
+                </header>
+
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 12px; margin:  20px 0;">
+                    <h2>🎮 Juego: ${selectedGame. toUpperCase()}</h2>
+                    <p style="font-size: 1.1rem; margin-top: 10px;">ID Temporal: ${participantId}</p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 30px; border-radius: 12px; margin: 20px 0;">
+                    <h2 style="margin-bottom: 20px;">📋 Tus Métricas: </h2>
+                    
+                    <div style="display:  grid; grid-template-columns:  1fr 1fr; gap: 15px; background: white; padding: 20px; border-radius: 8px;">
+                        <div><strong>Tiempo Reacción:</strong> ${metrics. reaction_ms_mean} ms</div>
+                        <div><strong>Consistencia:</strong> ${metrics.reaction_ms_std} ms</div>
+                        <div><strong>False Starts:</strong> ${metrics. false_starts}</div>
+                        <div><strong>Puntería:</strong> ${(metrics.aim_accuracy * 100).toFixed(1)}%</div>
+                        <div><strong>Tiempo al Target:</strong> ${metrics.mean_time_to_hit_ms} ms</div>
+                        <div><strong>Miss Rate:</strong> ${(metrics.miss_rate * 100).toFixed(1)}%</div>
+                        <div><strong>Clics/Minuto:</strong> ${metrics.cpm}</div>
+                        <div><strong>Error Rate:</strong> ${(metrics.error_rate * 100).toFixed(1)}%</div>
+                        <div style="grid-column: 1 / -1;"><strong>Duración Total:</strong> ${metrics.test_duration_s}s</div>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                    <h3>📝 Fila CSV para el investigador: </h3>
+                    <textarea id="csv-row" readonly style="width: 100%; height: 100px; padding: 10px; font-family: monospace; font-size: 11px; margin-top: 10px; border: 2px solid #e2e8f0; border-radius: 8px;">${csvRow}</textarea>
+                    <button onclick="copyCSV()" class="btn btn-primary" style="margin-top: 10px;">📋 Copiar CSV</button>
+                </div>
+
+                <div style="background:  #dbeafe; padding: 20px; border-radius: 12px; margin-top: 20px; border-left: 4px solid #3b82f6;">
+                    <strong>⚠️ IMPORTANTE:</strong>
+                    <ul style="margin:  10px 0 0 20px;">
+                        <li>Copia la fila CSV de arriba</li>
+                        <li>Envíala al investigador junto con tu <strong>rango verificado</strong></li>
+                        <li>Reemplazará [TU_RANGO_AQUÍ] con tu rango real</li>
+                    </ul>
+                </div>
+
+                <button onclick="location.reload()" class="btn btn-secondary" style="margin-top: 20px;">
+                    🔄 Hacer Otra Prueba
+                </button>
+            `;
+        }
+
+        function calculateStd(values) {
+            const avg = values.reduce((a, b) => a + b, 0) / values.length;
+            const squareDiffs = values.map(value => Math.pow(value - avg, 2));
+            const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
+            return Math.sqrt(avgSquareDiff);
+        }
+
+        function copyCSV() {
+            const textarea = document.getElementById('csv-row');
+            textarea.select();
+            document.execCommand('copy');
+            alert('✅ Copiado al portapapeles! ');
+        }
+    </script>
+</body>
+</html>
