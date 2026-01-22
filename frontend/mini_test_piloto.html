@@ -18,30 +18,30 @@
             <div class="progress-bar">
                 <div id="progress" class="progress-fill"></div>
             </div>
-            <p id="progress-text">Paso 1 de 4</p>
+            <p id="progress-text">Step 1 of 4</p>
         </div>
 
         <!-- Paso 1: Selección de juego -->
         <div id="step-1" class="step active">
-            <h2>Paso 1: Selecciona tu juego principal</h2>
+            <h2>Step 1: Select your main game</h2>
             <select id="game-select" class="game-select">
-                <option value="">-- Selecciona un juego --</option>
+                <option value="">-- Select a videogame --</option>
                 <option value="valorant">Valorant</option>
                 <option value="csgo">CS:GO / CS2</option>
                 <option value="fortnite">Fortnite</option>
                 <option value="warzone">Call of Duty Warzone</option>
             </select>
-            <button onclick="nextStep()" class="btn btn-primary">Continuar</button>
+            <button onclick="nextStep()" class="btn btn-primary">Continue</button>
         </div>
 
         <!-- Paso 2: Reaction Time Test -->
         <div id="step-2" class="step">
-            <h2>Paso 2: Test de Tiempo de Reacción</h2>
-            <p>Haz clic lo más rápido posible cuando la pantalla cambie de color</p>
+            <h2>Step 2: Reaction Time Test</h2>
+            <p>Click as fast as possible when the screen changes color.</p>
             
             <div id="reaction-container" class="test-container">
                 <div id="reaction-box" class="reaction-box waiting">
-                    <p id="reaction-text">Haz clic para comenzar</p>
+                    <p id="reaction-text">Click to continue</p>
                 </div>
             </div>
 
@@ -52,60 +52,60 @@
             </div>
 
             <button id="next-after-reaction" onclick="nextStep()" class="btn btn-primary hidden">
-                Continuar al Test de Puntería
+                Continue to the Aiming Test
             </button>
         </div>
 
         <!-- Paso 3: Aim Test -->
         <div id="step-3" class="step">
-            <h2>Paso 3: Test de Puntería</h2>
-            <p>Haz clic en los objetivos lo más rápido y preciso posible (30 segundos)</p>
+            <h2>Step 3: Aiming Test</h2>
+            <p>Click on the targets as quickly and accurately as possible (30 seconds).</p>
             
             <div id="aim-stats" class="stats">
-                <p>Tiempo: <span id="aim-timer">30</span>s</p>
-                <p>Aciertos: <span id="aim-hits">0</span></p>
-                <p>Fallos: <span id="aim-misses">0</span></p>
+                <p>Time:  <span id="aim-timer">30</span>s</p>
+                <p>Hits: <span id="aim-hits">0</span></p>
+                <p>Misses: <span id="aim-misses">0</span></p>
             </div>
 
             <div id="aim-container" class="aim-container">
                 <button id="start-aim" onclick="startAimTest()" class="btn btn-secondary">
-                    Comenzar Test
+                    Start Test
                 </button>
             </div>
 
             <button id="next-after-aim" onclick="nextStep()" class="btn btn-primary hidden">
-                Continuar al Test de Clics
+                Continue to Click Test
             </button>
         </div>
 
         <!-- Paso 4: Click Speed Test -->
         <div id="step-4" class="step">
-            <h2>Paso 4: Test de Velocidad de Clics</h2>
-            <p>Haz clic lo más rápido posible durante 10 segundos</p>
+            <h2>Step 4: Click Speed Test</h2>
+            <p>Click as fast as possible for 10 seconds</p>
             
             <div id="click-stats" class="stats">
-                <p>Tiempo: <span id="click-timer">10</span>s</p>
-                <p>Clics: <span id="click-count">0</span></p>
+                <p>Time: <span id="click-timer">10</span>s</p>
+                <p>Clicks: <span id="click-count">0</span></p>
                 <p>CPM: <span id="click-cpm">0</span></p>
             </div>
 
             <div id="click-container" class="test-container">
                 <div id="click-box" class="click-box">
                     <button id="start-click" onclick="startClickTest()" class="btn btn-large">
-                        Comenzar Test
+                        Start Test
                     </button>
                 </div>
             </div>
 
             <button id="submit-results" onclick="submitResults()" class="btn btn-success hidden">
-                Ver Resultados
+                View Results
             </button>
         </div>
 
         <!-- Loading -->
         <div id="loading" class="loading hidden">
             <div class="spinner"></div>
-            <p>Procesando resultados...</p>
+             <p>Analyzing your performance...</p>
         </div>
     </div>
 
@@ -127,23 +127,23 @@
             if (currentStep === 1) {
                 selectedGame = document.getElementById('game-select').value;
                 if (! selectedGame) {
-                    alert('Por favor selecciona un juego');
+                    alert('Please select a game');
                     return;
                 }
             }
 
             if (currentStep === 2 && testResults.reaction_times.length < 10) {
-                alert('Completa las 10 rondas del test de reacción');
+                alert('Complete all 10 reaction test rounds');
                 return;
             }
 
             if (currentStep === 3 && ! testResults.aim_results. hits) {
-                alert('Completa el test de puntería');
+                alert('Complete the aim test');
                 return;
             }
 
             if (currentStep === 4 && !testResults.click_test. clicks) {
-                alert('Completa el test de clics');
+                alert('Complete the click test');
                 return;
             }
 
@@ -212,53 +212,53 @@
             const container = document.querySelector('.container');
             container.innerHTML = `
                 <header>
-                    <h1>✅ ¡Test Completado!</h1>
-                    <p>Solo un paso más... </p>
+                    <h1>✅ ¡Test Completed!</h1>
+                    <p>Just one more step... </p>
                 </header>
 
                 <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 40px; border-radius: 12px; text-align: center; margin:  20px 0;">
-                    <h2 style="font-size: 2.5rem; margin:  0;">🎉 ¡Excelente! </h2>
+                    <h2 style="font-size: 2.5rem; margin:  0;">🎉 ¡Excellent! </h2>
                     <p style="font-size: 1.2rem; margin-top: 15px; opacity: 0.95;">
-                        Tu información ha sido procesada correctamente
+                        Your information has been processed correctly.
                     </p>
                 </div>
 
                 <div style="background: #f8fafc; padding: 30px; border-radius: 12px; margin:  20px 0;">
-                    <h2 style="margin-bottom: 20px;">📊 Resumen de Resultados: </h2>
+                    <h2 style="margin-bottom: 20px;">📊 Summary of Results: </h2>
                     
                     <div style="display:  grid; grid-template-columns:  repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                         <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1;">
-                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Tiempo Reacción</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Reaction Time</div>
                             <div style="font-size: 1.8rem; font-weight: 700; color: #1e293b;">${metrics.reaction_ms_mean} <span style="font-size: 1rem; color: #94a3b8;">ms</span></div>
                         </div>
                         
                         <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
-                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Puntería</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">AIM</div>
                             <div style="font-size:  1.8rem; font-weight: 700; color: #1e293b;">${(metrics.aim_accuracy * 100).toFixed(1)}<span style="font-size: 1rem; color: #94a3b8;">%</span></div>
                         </div>
                         
                         <div style="background: white; padding:  20px; border-radius:  8px; border-left:  4px solid #ec4899;">
-                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Clics/Min</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">Clicks/Min</div>
                             <div style="font-size: 1.8rem; font-weight: 700; color: #1e293b;">${metrics.cpm}</div>
                         </div>
                     </div>
                 </div>
 
                 <div style="background: #dbeafe; padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6; margin:  20px 0;">
-                    <h3 style="margin:  0 0 15px 0; color: #1e40af;">📝 Último Paso (15 segundos)</h3>
+                    <h3 style="margin:  0 0 15px 0; color: #1e40af;">📝 Last Step (15 sec)</h3>
                     <p style="margin:  0 0 20px 0; color: #1e293b; line-height: 1.6;">
-                        Para completar tu participación, necesitamos verificar tu <strong>rango actual</strong> en <strong>${selectedGame. toUpperCase()}</strong>.
+                        To complete your participation, we need to verify your <strong>current rank</strong> in <strong>${selectedGame. toUpperCase()}</strong>.
                         <br><br>
-                        Al hacer clic abajo, se abrirá un formulario donde solo debes: 
+                        When you click below, a form will open where you just need to: 
                         <br>
-                        1️⃣ Escribir tu rango (ej: Gold 2, Platinum, etc.)
+                        1️⃣ Write your rank (e.g., Gold 2, Platinum, etc.)
                         <br>
-                        2️⃣ Subir un screenshot de tu rango (opcional)
+                        2️⃣ Upload a screenshot of your rank (optional)
                         <br>
-                        3️⃣ Enviar
+                        3️⃣ Send
                     </p>
                     <button onclick="abrirFormulario()" class="btn btn-success" style="width: 100%; padding: 18px; font-size: 1.2rem;">
-                        📤 Completar Participación (Abrir Formulario)
+                        📤 Complete Participation (Open Form)
                     </button>
                 </div>
 
@@ -284,8 +284,8 @@
             
             // Mostrar confirmación
             setTimeout(() => {
-                if (confirm('✅ Se abrió el formulario en una nueva pestaña.\n\n¿Ya completaste y enviaste el formulario?')) {
-                    alert('🎉 ¡Gracias por participar en el estudio!\n\nTus datos ayudarán a mejorar la investigación sobre gaming performance.');
+                if (confirm('✅ The form opened in a new tab.\n\nHave you already completed and submitted the form?')) {
+                    alert('🎉 Thank you for participating in the study!\n\nYour data will help improve research on gaming performance.');
                     location.reload();
                 }
             }, 2000);
