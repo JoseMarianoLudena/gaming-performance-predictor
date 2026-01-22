@@ -28,14 +28,14 @@ function handleReactionClick() {
     if (reactionState.waiting) {
         reactionState.falseStarts++;
         
-        text.textContent = `❌ False Start!  (${reactionState.falseStarts} total)`;
+        text.textContent = `❌ False Start! (${reactionState.falseStarts} total)`;
         box.classList.remove('waiting', 'ready');
         box.classList.add('early');
         
         setTimeout(() => {
             box.classList.remove('early');
             box.classList.add('waiting');
-            text.textContent = 'Espera el verde... ';
+            text.textContent = 'Wait for green...';
             startReactionRound();
         }, 1500);
         return;
@@ -52,7 +52,7 @@ function handleReactionClick() {
         if (reactionState.attempts < reactionState.maxAttempts) {
             box.classList.remove('ready');
             box.classList.add('waiting');
-            text.textContent = 'Espera... ';
+            text.textContent = 'Wait...';
             setTimeout(startReactionRound, 1000);
         } else {
             // Test completado
@@ -64,7 +64,7 @@ function handleReactionClick() {
             
             box.classList.remove('ready');
             box.classList.add('completed');
-            text.textContent = `✓ Test completado!\nPromedio: ${getAverage(reactionState.times).toFixed(0)} ms\nFalse Starts: ${reactionState.falseStarts}`;
+            text.textContent = `✓ Test completed!\nAverage: ${getAverage(reactionState.times).toFixed(0)} ms\nFalse Starts: ${reactionState.falseStarts}`;
             document.getElementById('next-after-reaction').classList.remove('hidden');
         }
         return;
@@ -72,7 +72,7 @@ function handleReactionClick() {
     
     // Si está en espera inicial, comenzar
     if (box.classList.contains('waiting')) {
-        text.textContent = 'Espera... ';
+        text.textContent = 'Wait... ';
         document.getElementById('reaction-stats').classList.remove('hidden');
         reactionState.testStartTime = Date.now();
         startReactionRound();
@@ -91,7 +91,7 @@ function startReactionRound() {
     setTimeout(() => {
         box.classList.remove('waiting');
         box.classList.add('ready');
-        text.textContent = '¡CLIC AHORA!';
+        text.textContent = 'CLICK NOW!';
         reactionState.startTime = Date. now();
         reactionState.waiting = false;
     }, delay);

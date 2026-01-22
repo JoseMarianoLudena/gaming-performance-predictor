@@ -15,7 +15,7 @@ function startClickTest() {
     
     startBtn.style.display = 'none';
     box.classList.add('active');
-    box.innerHTML = '<p class="click-prompt">¡HAZ CLIC! </p>';
+    box.innerHTML = '<p class="click-prompt">CLICK! </p>';
     
     clickState.active = true;
     clickState.clicks = 0;
@@ -78,7 +78,7 @@ function endClickTest() {
     
     box.classList.remove('active');
     box.classList.add('completed');
-    box.innerHTML = `<p class="completed-message">✓ Test completado!<br>${clickState.clicks} clics en ${clickState.duration} segundos</p>`;
+    box. innerHTML = `<p class="completed-message">✓ Test completed!<br>${clickState.clicks} clicks in ${clickState.duration} seconds</p>`;
     
     // Save results
     testResults.click_test = {

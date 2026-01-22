@@ -130,7 +130,7 @@ function endAimTest() {
     const container = document.getElementById('aim-container');
     const testDuration = (Date.now() - aimState.testStartTime) / 1000;
     
-    container.innerHTML = `<p class="completed-message">✓ Test de puntería completado! <br>Aciertos: ${aimState.hits} | Fallos: ${aimState.misses}</p>`;
+    container. innerHTML = `<p class="completed-message">✓ Aim test completed! <br>Hits: ${aimState.hits} | Misses: ${aimState.misses}</p>`;
     container.classList.remove('active');
     
     // Save results con TODAS las métricas

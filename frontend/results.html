@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tus Resultados - Gaming Performance Test</title>
+    <title>Your Results - Gaming Performance Test</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container results-container">
         <header>
-            <h1>🎯 Tus Resultados</h1>
-            <p>Análisis completo de tu performance</p>
+            <h1>🎯 Your Results</h1>
+            <p>Complete performance analysis</p>
         </header>
 
         <!-- Main Result Card -->
         <div class="result-card">
-            <h2>Tu Skill Tier</h2>
+            <h2>Your Skill Tier</h2>
             <div id="tier-badge" class="tier-badge">LOADING...</div>
             
             <div class="performance-score">
@@ -27,17 +27,17 @@
             <div id="game-equivalent" class="game-equivalent hidden">
                 <strong id="selected-game">VALORANT</strong>
                 <br>
-                Equivalente aproximado: <span id="rank-equivalent">Gold-Platinum</span>
+                Approximate equivalent: <span id="rank-equivalent">Gold-Platinum</span>
             </div>
 
             <p style="margin-top: 20px; opacity: 0.9;">
-                Confianza del modelo: <strong id="confidence">--</strong>%
+                Model confidence: <strong id="confidence">--</strong>%
             </p>
         </div>
 
         <!-- Probabilities -->
         <div id="probabilities-section" class="probabilities hidden">
-            <h3>Distribución de Probabilidades</h3>
+            <h3>Probability Distribution</h3>
             
             <div class="probability-bar">
                 <div class="probability-label">
@@ -71,11 +71,11 @@
         </div>
 
         <!-- Detailed Metrics -->
-        <h2 class="text-center mt-20 mb-20">📊 Métricas Detalladas</h2>
-        
+       <h2 class="text-center mt-20 mb-20">📊 Detailed Metrics</h2>
+
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-label">Tiempo de Reacción</div>
+                <div class="metric-label">Reaction Time</div>
                 <div class="metric-value">
                     <span id="reaction-avg">--</span>
                     <span class="metric-unit">ms</span>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Consistencia</div>
+                <div class="metric-label">Consistency</div>
                 <div class="metric-value">
                     <span id="reaction-std">--</span>
                     <span class="metric-unit">ms</span>
@@ -98,7 +98,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Puntería</div>
+                <div class="metric-label">Aim Accuracy</div>
                 <div class="metric-value">
                     <span id="aim-accuracy">--</span>
                     <span class="metric-unit">%</span>
@@ -106,7 +106,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Tiempo al Target</div>
+                <div class="metric-label">Time to Target</div>
                 <div class="metric-value">
                     <span id="time-to-hit">--</span>
                     <span class="metric-unit">ms</span>
@@ -122,7 +122,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Clics por Minuto</div>
+                <div class="metric-label">Clicks per Minute</div>
                 <div class="metric-value">
                     <span id="cpm">--</span>
                 </div>
@@ -137,7 +137,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Duración Total</div>
+                <div class="metric-label">Total Duration</div>
                 <div class="metric-value">
                     <span id="test-duration">--</span>
                     <span class="metric-unit">s</span>
@@ -147,11 +147,11 @@
 
         <!-- Actions -->
         <div class="text-center mt-20">
-            <button onclick="window.location.href='mini_test. html'" class="btn btn-primary">
-                🔄 Realizar Test Nuevamente
+            <button onclick="window.location.href='mini_test.html'" class="btn btn-primary">
+                🔄 Take Test Again
             </button>
-            <button onclick="window.location. href='index.html'" class="btn btn-secondary">
-                🏠 Volver al Inicio
+            <button onclick="window.location.href='index.html'" class="btn btn-secondary">
+                🏠 Back to Home
             </button>
         </div>
     </div>
@@ -163,7 +163,7 @@
             const selectedGame = localStorage.getItem('selectedGame');
 
             if (! results) {
-                alert('No se encontraron resultados.  Por favor realiza el test primero.');
+                alert('No results found.  Please take the test first.');
                 window.location.href = 'mini_test.html';
                 return;
             }

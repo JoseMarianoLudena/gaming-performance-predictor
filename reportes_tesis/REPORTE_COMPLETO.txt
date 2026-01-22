@@ -1,0 +1,82 @@
+
+================================================================================
+REPORTE DE RESULTADOS - SISTEMA DE PREDICCIÓN DE SKILL TIER
+================================================================================
+
+1. INFORMACIÓN DEL DATASET
+────────────────────────────────────────────────────────────────────────────────
+   Total de Participantes: 703
+   
+   Distribución por Tier:
+   tier
+0    208
+1    255
+2    240
+   
+   Porcentaje por Tier:
+   tier
+0    29.59
+1    36.27
+2    34.14%
+
+2. MODELO SELECCIONADO
+────────────────────────────────────────────────────────────────────────────────
+   Algoritmo: Random Forest
+   Método de Validación: Leave-One-Out Cross-Validation (LOOCV)
+   Fecha de Entrenamiento: 2026-01-20T19:02:44.193577
+
+3. MÉTRICAS GLOBALES
+────────────────────────────────────────────────────────────────────────────────
+   Accuracy:    88.19% ± 32.27%
+   Precision (macro): 88.19%
+   Recall (macro): 88.19%
+   F1-Score (macro): 88.19%
+
+4. MÉTRICAS POR TIER
+────────────────────────────────────────────────────────────────────────────────
+
+   LOW:
+     Precision: 92.20%
+     Recall:     90.87%
+     F1-Score:  91.53%
+    Support:   208 participants
+
+
+   MEDIUM:
+     Precision: 85.48%
+     Recall:     83.14%
+     F1-Score:  84.29%
+    Support:   255 participants
+
+
+   HIGH:
+     Precision: 87.60%
+     Recall:     91.25%
+     F1-Score:  89.39%
+    Support:   240 participants
+
+
+5. CONFUSION MATRIX
+────────────────────────────────────────────────────────────────────────────────
+[[189  16   3]
+ [ 15 212  28]
+ [  1  20 219]]
+
+6. MODEL COMPARISON
+────────────────────────────────────────────────────────────────────────────────
+
+   Logistic Regression:
+     Accuracy:  86.49%
+     F1-Score:  86.49%
+
+   Random Forest:
+     Accuracy:  88.19%
+     F1-Score:  88.19%
+
+   Linear Svm:
+     Accuracy:  85.35%
+     F1-Score:  85.35%
+
+================================================================================
+END OF REPORT
+================================================================================
